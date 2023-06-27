@@ -4,10 +4,14 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import cors from 'cors';
-import mongoose from 'mongoose';
+import { db } from '../src/db/db';
 import router from './router';
+import * as dotenv from "dotenv";
+dotenv.config({ path: __dirname+'/.env' });
 
 const app = express();
+const PORT = process.env.PORT;
+const MONGO_URL = process.env.MONGO_URL;
 
 app.use(cors({
     credentials: true,
@@ -20,14 +24,9 @@ app.use(bodyParser.json());
 const server = http.createServer(app);
 
 server.listen(8000, () => {
-    console.log('Server running on http://localhost:8000/');
+    console.log(`Server is running on http://localhost:${PORT}/`);
 })
 
-
-const MONGO_URL = '';
-
-mongoose.Promise = Promise;
-mongoose.connect(MONGO_URL);
-mongoose.connection.on('error', (error: Error) => console.log(error));
+db(MONGO_URL);
 
 app.use('/', router());
