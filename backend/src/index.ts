@@ -5,13 +5,14 @@ import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import cors from 'cors';
 import { db } from '../src/db/db';
-import router from './router';
+import router from './routes';
 import * as dotenv from "dotenv";
 dotenv.config({ path: __dirname+'/.env' });
 
-const app = express();
 const PORT = process.env.PORT;
 const MONGO_URL = process.env.MONGO_URL;
+
+const app = express();
 
 app.use(cors({
     credentials: true,
@@ -23,7 +24,7 @@ app.use(bodyParser.json());
 
 const server = http.createServer(app);
 
-server.listen(8000, () => {
+server.listen(`${PORT}`, () => {
     console.log(`Server is running on http://localhost:${PORT}/`);
 })
 
